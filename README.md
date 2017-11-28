@@ -66,7 +66,7 @@ ch, err := client.Notify()
 // Just get connection and disconnection events.
 ch, err := client.Notify(WpaEventConnected, WpaEventDisconnected)
 
-ev : <- ch
+ev := <- ch
 ```
 
 ## Credits
