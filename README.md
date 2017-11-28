@@ -1,4 +1,4 @@
-# wpaclient
+# wpaclient [![Travis-CI](https://travis-ci.org/brlbil/wpaclient.svg)](https://travis-ci.org/brlbil/wpaclient) [![GoDoc](https://godoc.org/github.com/brlbil/wpaclient?status.svg)](http://godoc.org/github.com/brlbil/wpaclient) [![Go Report Card](https://goreportcard.com/badge/github.com/brlbil/wpaclient)](https://goreportcard.com/report/github.com/brlbil/wpaclient)
 
 Package wpaclient provides a high level wap_supplicant client.
 
