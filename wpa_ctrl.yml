@@ -1,0 +1,42 @@
+--- 
+GENERATOR: 
+  PackageName: wpactrl
+
+PARSER: 
+  IncludePaths: [/usr/include]
+  SourcesPaths: [wpa_ctrl.h]
+
+TRANSLATOR:
+  ConstRules: 
+    defines: expand
+    enum: expand
+  Rules: 
+    const: 
+      - {transform: lower}
+      - {action: accept, from: "(?i)wpa_"}
+      - {action: accept, from: "(?i)wps_"}
+      - {action: accept, from: "(?i)ibss_"}
+      - {action: accept, from: "(?i)dpp_"}
+      - {action: accept, from: "(?i)mesh_"}
+      - {action: accept, from: "(?i)vmm_"}
+      - {action: accept, from: "(?i)p2p_"}
+      - {action: accept, from: "(?i)ess_"}
+      - {action: accept, from: "(?i)interworking_"}
+      - {action: accept, from: "(?i)cred_"}
+      - {action: accept, from: "(?i)gas_"}
+      - {action: accept, from: "(?i)rx_"}
+      - {action: accept, from: "(?i)hs20_"}
+      - {action: accept, from: "(?i)rrm_"}
+      - {action: accept, from: "(?i)ap_"}
+      - {action: accept, from: "(?i)interface_"}
+      - {action: accept, from: "(?i)acs_"}
+      - {action: accept, from: "(?i)dfs_"}
+      - {action: accept, from: "(?i)bss_"}
+      - {action: accept, from: "(?i)mbo_"}
+      - {action: accept, from: "(?i)becon_"}
+      - {action: accept, from: "(?i)pmksa_"}
+      - {action: accept, from: "(?i)fils_"}
+      - {action: accept, from: "(?i)vendor_"}
+      - {transform: export}
+    post-global: 
+      - {load: snakecase}
