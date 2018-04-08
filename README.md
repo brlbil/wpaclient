@@ -50,7 +50,7 @@ List is a helper function for LIST_NETWORKS command.
 ```go
 nets, err := client.Networks()
 
-for _, nt := range aps {
+for _, nt := range nets {
     fmt.Printf("id: %d, ssid: %s\n", nt.ID, nt.SSID)
 }
 ```
