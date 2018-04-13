@@ -75,4 +75,4 @@ ev := <- ch
 
 ## License
 
-The MIT License (MIT) - see [`LICENSE.md`](https://github.com/fatih/color/blob/master/LICENSE.md) for more details
+The MIT License (MIT) - see [`LICENSE.md`](https://github.com/brlbil/wpaclient/blob/master/LICENSE.md) for more details
