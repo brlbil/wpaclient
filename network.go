@@ -3,11 +3,10 @@ package wpaclient
 import (
 	"bytes"
 	"encoding/csv"
+	"fmt"
 	"net"
 	"strconv"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // Network represents network data returned from "LIST_NETWORK" command
@@ -37,7 +36,7 @@ func parseNetwork(b []byte) ([]Network, error) {
 	for _, rec := range recs {
 		id, err := strconv.Atoi(rec[0])
 		if err != nil {
-			return nil, errors.Wrap(err, "parse id")
+			return nil, fmt.Errorf("parse id: %w", err)
 		}
 
 		nts = append(nts, Network{
@@ -79,17 +78,17 @@ func parseAP(b []byte) ([]AP, error) {
 	for _, rec := range recs {
 		bssid, err := net.ParseMAC(rec[0])
 		if err != nil {
-			return nil, errors.Wrap(err, "parse mac")
+			return nil, fmt.Errorf("parse mac: %w", err)
 		}
 
 		fr, err := strconv.Atoi(rec[1])
 		if err != nil {
-			return nil, errors.Wrap(err, "parse frequency")
+			return nil, fmt.Errorf("parse frequency: %w", err)
 		}
 
 		ss, err := strconv.Atoi(rec[2])
 		if err != nil {
-			return nil, errors.Wrap(err, "parse signal strength")
+			return nil, fmt.Errorf("parse signal strength: %w", err)
 		}
 
 		aps = append(aps, AP{

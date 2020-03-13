@@ -2,13 +2,12 @@ package wpaclient
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 var (
@@ -143,7 +142,7 @@ func (c *Client) Notify(evs ...string) (<-chan Event, error) {
 
 	if !a {
 		if err := c.attach(); err != nil {
-			return nil, errors.Wrap(err, "attach failed")
+			return nil, fmt.Errorf("attach failed: %w", err)
 		}
 
 		go c.dispacher()
@@ -249,7 +248,7 @@ func (c *Client) Close() error {
 		if e := c.cmdsock.close(); e != nil {
 
 			if err != nil {
-				err = errors.Wrap(e, err.Error())
+				err = fmt.Errorf(err.Error()+": %w", e)
 			}
 			err = e
 		}
@@ -258,14 +257,14 @@ func (c *Client) Close() error {
 	if c.evsock != nil {
 		e := c.detach()
 		if err != nil {
-			err = errors.Wrap(e, err.Error())
+			err = fmt.Errorf(err.Error()+": %w", e)
 		} else {
 			err = e
 		}
 
 		if e := c.evsock.close(); e != nil {
 			if err != nil {
-				err = errors.Wrap(e, err.Error())
+				err = fmt.Errorf(err.Error()+": %w", e)
 			}
 			err = e
 		}

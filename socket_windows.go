@@ -1,9 +1,8 @@
 package wpaclient
 
 import (
+	"fmt"
 	"net"
-
-	"github.com/pkg/errors"
 )
 
 var socketType = "UDP"
@@ -19,7 +18,7 @@ func dial(addr string) (*socket, error) {
 
 	remote, err := net.ResolveUDPAddr("udp", addr)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not resolve udp address")
+		return nil, fmt.Errorf("could not resolve udp address: %w", err)
 	}
 
 	c, err := net.DialUDP("udp",
@@ -27,7 +26,7 @@ func dial(addr string) (*socket, error) {
 		remote,
 	)
 	if err != nil {
-		return nil, errors.Wrap(err, "dial failed")
+		return nil, fmt.Errorf("dial failed: %w", err)
 	}
 
 	return &socket{c: c}, nil

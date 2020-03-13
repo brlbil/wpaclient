@@ -5,8 +5,6 @@ import (
 	"net"
 	"os"
 	"path"
-
-	"github.com/pkg/errors"
 )
 
 var socketType = "UNIX"
@@ -34,7 +32,7 @@ func dial(addr string) (*socket, error) {
 	}
 
 	if err != nil {
-		return nil, errors.Wrap(err, "socket not found")
+		return nil, fmt.Errorf("socket not found: %w", err)
 	}
 
 	// ResolveUnixAddr will not return an error,
@@ -44,7 +42,7 @@ func dial(addr string) (*socket, error) {
 	for i := 0; i <= 2; i++ {
 		l := localSocket(i)
 		if i == 2 {
-			return nil, errors.Errorf("reached max socket file limit: %s", l)
+			return nil, fmt.Errorf("reached max socket file limit: %s", l)
 		}
 
 		_, err := os.Stat(l)
@@ -62,7 +60,7 @@ func dial(addr string) (*socket, error) {
 
 	if err != nil {
 		os.Remove(lf)
-		return nil, errors.Wrap(err, "dial failed")
+		return nil, fmt.Errorf("dial failed: %w", err)
 	}
 
 	return &socket{c: c, f: lf}, nil

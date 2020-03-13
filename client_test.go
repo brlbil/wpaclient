@@ -2,14 +2,13 @@ package wpaclient
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"net"
 	"reflect"
 	"strings"
 	"testing"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 func TestNewClient(t *testing.T) {
@@ -48,7 +47,7 @@ func TestExecute(t *testing.T) {
 			}
 
 			b, err := c.Execute(tt.cmd, tt.args...)
-			if tt.err != errors.Cause(err) {
+			if !errors.Is(err, tt.err) {
 				t.Errorf("Execute expect error %v, got %v", tt.err, err)
 			}
 

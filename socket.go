@@ -1,10 +1,9 @@
 package wpaclient
 
 import (
+	"fmt"
 	"io"
 	"net"
-
-	"github.com/pkg/errors"
 )
 
 type socket struct {
@@ -15,7 +14,7 @@ type socket struct {
 func (s *socket) send(b []byte) error {
 	n, err := s.c.Write(b)
 	if err != nil {
-		return errors.Wrap(err, "write to socket failed")
+		return fmt.Errorf("write to socket failed: %w", err)
 	}
 
 	if n != len(b) {
@@ -30,7 +29,7 @@ func (s *socket) receive() ([]byte, error) {
 
 	n, err := s.c.Read(b[:])
 	if err != nil {
-		return nil, errors.Wrap(err, "read from socket failed")
+		return nil, fmt.Errorf("read from socket failed: %w", err)
 	}
 
 	return b[:n], nil
@@ -39,12 +38,12 @@ func (s *socket) receive() ([]byte, error) {
 func (s *socket) execute(cmd []byte) ([]byte, error) {
 	err := s.send(cmd)
 	if err != nil {
-		return nil, errors.Wrap(err, "send failed")
+		return nil, fmt.Errorf("send failed: %w", err)
 	}
 
 	buf, err := s.receive()
 	if err != nil {
-		return nil, errors.Wrap(err, "read failed")
+		return nil, fmt.Errorf("read failed: %w", err)
 	}
 
 	return buf, nil

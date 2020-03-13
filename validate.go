@@ -3,8 +3,6 @@ package wpaclient
 import (
 	"fmt"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // validate can evolve to more complex function,
@@ -40,7 +38,7 @@ func validate(cmd string, buf []byte) error {
 	}
 
 	if cmd == CmdPing && sb != "PONG" {
-		return errors.Wrapf(ErrCmdFailed, "expected PONG got %s", sb)
+		return fmt.Errorf("expected PONG got %s: %w", sb, ErrCmdFailed)
 	}
 
 	return nil

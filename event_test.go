@@ -1,11 +1,10 @@
 package wpaclient
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"testing"
-
-	"github.com/pkg/errors"
 )
 
 func TestParseEvent(t *testing.T) {
@@ -17,12 +16,12 @@ func TestParseEvent(t *testing.T) {
 		{
 			name: "short buf",
 			buf:  []byte("MSG\n"),
-			ev:   &Event{Err: errors.Errorf("message too short (MSG)")},
+			ev:   &Event{Err: errors.New("message too short: MSG")},
 		},
 		{
 			name: "event severity",
 			buf:  []byte("<a>Message"),
-			ev:   &Event{Err: errors.Errorf("parse severity: strconv.Atoi: parsing \"a\": invalid syntax")},
+			ev:   &Event{Err: errors.New("parse severity: strconv.Atoi: parsing \"a\": invalid syntax")},
 		},
 		{
 			name: "event connected",
@@ -32,7 +31,7 @@ func TestParseEvent(t *testing.T) {
 		{
 			name: "event auth failed",
 			buf:  []byte(fmt.Sprintf("<3>%sOTP-T:Challenge 1235663 needed for SSID foobar\n", WpaCtrlReq)),
-			ev:   &Event{Err: errors.Errorf("parse networkID: strconv.Atoi: parsing \"T\": invalid syntax")},
+			ev:   &Event{Err: errors.New("parse networkID: strconv.Atoi: parsing \"T\": invalid syntax")},
 		},
 		{
 			name: "event auth request",

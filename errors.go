@@ -1,12 +1,14 @@
 package wpaclient
 
-import "errors"
+type constError string
+
+func (c constError) Error() string { return string(c) }
 
 // ErrUnknownCmd returned when a UNKNOWN_COMMAND message received
-var ErrUnknownCmd = errors.New("unknown command")
+var ErrUnknownCmd = constError("unknown command")
 
 // ErrCmdFailed returned when a FAIL message received
-var ErrCmdFailed = errors.New("command failed")
+var ErrCmdFailed = constError("command failed")
 
 // InvalidCmdError returned when Invalid COMMAND message received
 type InvalidCmdError struct {

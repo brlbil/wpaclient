@@ -1,10 +1,9 @@
 package wpaclient
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // AuthReq represents data received with "CTRL-REQ-" requests
@@ -25,12 +24,12 @@ type Event struct {
 func parseEvent(b []byte) *Event {
 	if len(b) < 5 {
 		msg := strings.TrimSuffix(string(b), "\n")
-		return &Event{Err: errors.Errorf("message too short (%s)", msg)}
+		return &Event{Err: fmt.Errorf("message too short: %s", msg)}
 	}
 
 	sb, err := strconv.Atoi(string(b[1]))
 	if err != nil {
-		return &Event{Err: errors.Wrap(err, "parse severity")}
+		return &Event{Err: fmt.Errorf("parse severity: %w", err)}
 	}
 
 	msg := strings.TrimSuffix(string(b[3:]), "\n")
@@ -42,7 +41,7 @@ func parseEvent(b []byte) *Event {
 
 		id, err := strconv.Atoi(msg[i+1 : j])
 		if err != nil {
-			return &Event{Err: errors.Wrap(err, "parse networkID")}
+			return &Event{Err: fmt.Errorf("parse networkID: %w", err)}
 		}
 
 		return &Event{Sev: sb, Message: WpaCtrlReq,
